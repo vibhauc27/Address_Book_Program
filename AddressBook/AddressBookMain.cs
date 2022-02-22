@@ -10,39 +10,50 @@ namespace AddressBook
         List<Contact> addressBook = new List<Contact>();
         public void AddContact()
         {
-            Contact contact = new Contact();
-            Console.Write("Enter First Name : ");
-            contact.firstName = Console.ReadLine();
-            Console.Write("Enter Last Name : ");
-            contact.lastName = Console.ReadLine();
-            Console.Write("Enter Address : ");
-            contact.address = Console.ReadLine();
-            Console.Write("Enter City : ");
-            contact.city = Console.ReadLine();
-            Console.Write("Enter State : ");
-            contact.state = Console.ReadLine();
-            Console.Write("Enter Zip Code : ");
-            contact.zipCode = Console.ReadLine();
-            Console.Write("Enter Phone Number : ");
-            contact.phoneNunmber = Console.ReadLine();
-            Console.Write("Enter Email : ");
-            contact.eMail = Console.ReadLine();
-            Console.WriteLine("Created Contact :\n" + contact.firstName
-                            + "\n" + contact.lastName
-                            + "\n" + contact.address
-                            + "\n" + contact.city
-                            + "\n" + contact.state
-                            + "\n" + contact.zipCode
-                            + "\n" + contact.phoneNunmber
-                            + "\n" + contact.eMail);
-            addressBook.Add(contact);
-            Console.WriteLine("{0}'s Contact Successfully Added", contact.firstName);
+            Console.Write("How many person's contact details do you want to add? : ");
+            int personNum = Convert.ToInt32(Console.ReadLine());
+            while (personNum > 0)
+            {
+                Contact contact = new Contact();
+                Console.Write("Enter First Name : ");
+                contact.firstName = Console.ReadLine();
+                Console.Write("Enter Last Name : ");
+                contact.lastName = Console.ReadLine();
+                Console.Write("Enter Address : ");
+                contact.address = Console.ReadLine();
+                Console.Write("Enter City : ");
+                contact.city = Console.ReadLine();
+                Console.Write("Enter State : ");
+                contact.state = Console.ReadLine();
+                Console.Write("Enter Zip Code : ");
+                contact.zipCode = Console.ReadLine();
+                Console.Write("Enter Phone Number : ");
+                contact.phoneNunmber = Console.ReadLine();
+                Console.Write("Enter Email : ");
+                contact.eMail = Console.ReadLine();
+                Console.WriteLine("\nCreated Contact :"
+                                + "\n" + contact.firstName
+                                + "\n" + contact.lastName
+                                + "\n" + contact.address
+                                + "\n" + contact.city
+                                + "\n" + contact.state
+                                + "\n" + contact.zipCode
+                                + "\n" + contact.phoneNunmber
+                                + "\n" + contact.eMail);
+                addressBook.Add(contact);
+                Console.WriteLine("{0}'s Contact Successfully Added", contact.firstName);
+                personNum--;
+            }
         }
 
         public void EditContact(string firstName)
         {
             Contact contact = new Contact();
-
+            if (addressBook.Count <= 0)
+            {
+                Console.WriteLine("Your Address Book is empty");
+                return;
+            }
             foreach (var data in addressBook)
             {
                 if (data.firstName == firstName)
@@ -100,13 +111,21 @@ namespace AddressBook
                     }
 
                 }
+                else
+                {
+                    Console.WriteLine("Contact of the person {0} does not exist : ", firstName);
+                }
             }
         }
-
 
         public void DeleteContact(string firsName)
         {
             Contact contact = new Contact();
+            if (addressBook.Count <= 0)
+            {
+                Console.WriteLine("Your Address Book is empty");
+                return;
+            }
             foreach (var data in addressBook)
             {
                 if (data.firstName == firsName)
@@ -116,9 +135,12 @@ namespace AddressBook
                     Console.WriteLine("{0}'s Contact Successfully Deleted", contact.firstName);
                     return;
                 }
+                else
+                {
+                    Console.WriteLine("Contact of the person {0} does not exist : ", firsName);
+                }
             }
         }
-
         public void Display()
         {
             foreach (var data in addressBook)
@@ -133,5 +155,7 @@ namespace AddressBook
                             + "\n" + data.eMail);
             }
         }
+
+
     }
 }
