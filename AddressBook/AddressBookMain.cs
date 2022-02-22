@@ -104,6 +104,21 @@ namespace AddressBook
         }
 
 
+        public void DeleteContact(string firsName)
+        {
+            Contact contact = new Contact();
+            foreach (var data in addressBook)
+            {
+                if (data.firstName == firsName)
+                {
+                    contact = data;
+                    addressBook.Remove(contact);
+                    Console.WriteLine("{0}'s Contact Successfully Deleted", contact.firstName);
+                    return;
+                }
+            }
+        }
+
         public void Display()
         {
             foreach (var data in addressBook)
