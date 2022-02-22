@@ -36,7 +36,7 @@ namespace AddressBook
                             + "\n" + contact.zipCode
                             + "\n" + contact.phoneNunmber
                             + "\n" + contact.eMail);
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }
