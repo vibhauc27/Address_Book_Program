@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AddressBook;
+using AddressBookSystem;
 
 namespace AddressBookSystem
 {
     class AddressBookMain
     {
-        public Dictionary<string, List<Contact>> myAddressBook = new Dictionary<string, List<Contact>>();
-        List<Contact> addressBook = new List<Contact>();
+        List<Contacts> addressBook = new List<Contacts>();
+        public Dictionary<string, List<Contacts>> myAddressBook = new Dictionary<string, List<Contacts>>();
+
 
         public void AddAddressBook()
         {
@@ -75,7 +76,7 @@ namespace AddressBookSystem
 
         public void CallContacts(string addressBookName)
         {
-            myAddressBook[addressBookName] = new List<Contact>();
+            myAddressBook[addressBookName] = new List<Contacts>();
             bool flag = true;
             while (flag)
             {
@@ -83,8 +84,9 @@ namespace AddressBookSystem
                                 + "\n 2.Edit Contact."
                                 + "\n 3.Delete Contact."
                                 + "\n 4.Display Contact."
-                                + "\n 5 Go To Main."
-                                + "\n 6.Exit.\n");
+                                + "\n 5.Go To Main."
+                                + "\n 6.Search by city or state"
+                                + "\n 7.Exit.\n");
                 int option = Convert.ToInt32(Console.ReadLine());
                 switch (option)
                 {
@@ -103,7 +105,12 @@ namespace AddressBookSystem
                     case 5:
                         AddAddressBook();
                         break;
-                    case 6:
+                    case 6:                       
+                        Console.WriteLine("Enter city or state to search contact");
+                        string cityOrState = Console.ReadLine();                       
+                        SearchPersonByCityOrState(addressBookName, cityOrState);
+                        break;
+                    case 7:
                         flag = false;
                         break;
                     default:
@@ -122,7 +129,7 @@ namespace AddressBookSystem
             int personNum = Convert.ToInt32(Console.ReadLine());
             while (personNum > 0)
             {
-                Contact contacts = new Contact();
+                Contacts contacts = new Contacts();
                 Console.Write("Enter First Name   : ");
                 contacts.firstName = Console.ReadLine();
                 Console.Write("Enter Last Name    : ");
@@ -139,24 +146,34 @@ namespace AddressBookSystem
                 contacts.phoneNunmber = Console.ReadLine();
                 Console.Write("Enter Email        : ");
                 contacts.eMail = Console.ReadLine();
-                Console.WriteLine("\nCreated Contact :"
-                                + "\n" + contacts.firstName
-                                + "\n" + contacts.lastName
-                                + "\n" + contacts.address
-                                + "\n" + contacts.city
-                                + "\n" + contacts.state
-                                + "\n" + contacts.zipCode
-                                + "\n" + contacts.phoneNunmber
-                                + "\n" + contacts.eMail);
-                myAddressBook[addressBookName].Add(contacts);
-                Console.WriteLine("{0}'s Contact Successfully Added to AddressBook : {1} ", contacts.firstName, addressBookName);
-                personNum--;
+
+                var res = myAddressBook[addressBookName].Find(p => p.firstName.Equals(contacts.firstName) && p.lastName.Equals(contacts.lastName));
+                if (res != null)
+                {
+                    Console.WriteLine("Duplicate contacts not allowed");
+                }
+                else
+                {
+
+                    Console.WriteLine("\nCreated Contact :"
+                                    + "\n" + contacts.firstName
+                                    + "\n" + contacts.lastName
+                                    + "\n" + contacts.address
+                                    + "\n" + contacts.city
+                                    + "\n" + contacts.state
+                                    + "\n" + contacts.zipCode
+                                    + "\n" + contacts.phoneNunmber
+                                    + "\n" + contacts.eMail);
+                    myAddressBook[addressBookName].Add(contacts);
+                    Console.WriteLine("{0} {1}'s Contact Successfully Added to AddressBook : {2}", contacts.firstName, contacts.lastName, addressBookName);
+                    personNum--;
+                }
             }
         }
 
         public void EditContact(string addressBookName)
         {
-            Contact contact = new Contact();
+            Contacts contact = new Contacts();
             if (myAddressBook[addressBookName].Count <= 0)
             {
                 Console.WriteLine("Your Address Book is empty");
@@ -226,7 +243,7 @@ namespace AddressBookSystem
 
         public void DeleteContact(string addressBookName)
         {
-            Contact contact = new Contact();
+            Contacts contact = new Contacts();
             if (myAddressBook[addressBookName].Count <= 0)
             {
                 Console.WriteLine("Your Address Book is empty");
@@ -253,7 +270,7 @@ namespace AddressBookSystem
         }
         public void Display(string addressBookName)
         {
-            Contact contact = new Contact();
+            Contacts contact = new Contacts();
             if (myAddressBook[addressBookName].Count > 0)
             {
                 foreach (var data in myAddressBook[addressBookName])
@@ -285,7 +302,20 @@ namespace AddressBookSystem
                 Console.WriteLine("Address Book is empty!!!");
             }
         }
+        public void SearchPersonByCityOrState(string addressBookName, string userData)
+        {
+            var searchResut = myAddressBook[addressBookName].FindAll(x => x.city == userData || x.state == userData);
+            if (searchResut.Count != 0)
+            {
+                foreach (var item in searchResut)
+                {
+                    Console.WriteLine(item.firstName);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No person found for this city or state");
+            }
+        }
     }
-
-
 }
