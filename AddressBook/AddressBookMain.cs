@@ -105,9 +105,9 @@ namespace AddressBookSystem
                     case 5:
                         AddAddressBook();
                         break;
-                    case 6:                       
+                    case 6:
                         Console.WriteLine("Enter city or state to search contact");
-                        string cityOrState = Console.ReadLine();                       
+                        string cityOrState = Console.ReadLine();
                         SearchPersonByCityOrState(addressBookName, cityOrState);
                         break;
                     case 7:
@@ -315,6 +315,108 @@ namespace AddressBookSystem
             else
             {
                 Console.WriteLine("No person found for this city or state");
+            }
+        }
+
+        public void ViewPersonByCityOrState(string addressBookName)
+        {
+            if (myAddressBook[addressBookName].Count <= 0)
+            {
+                Console.WriteLine("Your Address Book is empty");
+                return;
+            }
+            Contacts contact = new Contacts();
+            bool flag = true;
+            while (flag)
+            {
+                Console.WriteLine("Choose an option \n1. View Person by city \n2. View Person by state \n3.Exit");
+                int option = Convert.ToInt32(Console.ReadLine());
+                switch (option)
+                {
+                    case 1:
+                        Console.WriteLine("Enter the city");
+                        string city = Console.ReadLine();
+                        var searchCity = myAddressBook[addressBookName].FindAll(x => x.city == city);
+                        if (searchCity.Count != 0)
+                        {
+                            foreach (var item in searchCity)
+                            {
+                                Console.WriteLine("First Name :" + item.firstName);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No person found for this city");
+                        }
+                        break;
+                    case 2:
+                        Console.WriteLine("Enter the state");
+                        string state = Console.ReadLine();
+                        var searchState = myAddressBook[addressBookName].FindAll(x => x.state == state);
+                        if (searchState.Count != 0)
+                        {
+                            foreach (var item in searchState)
+                            {
+                                Console.WriteLine("First Name :" + item.firstName);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No person found for this state");
+                        }
+                        break;
+                    case 3:
+                        flag = false;
+                        break;
+                    default:
+                        Console.WriteLine("Choose correct option");
+                        break;
+                }
+            }
+        }
+
+        public void CountPersonByCityOrState(string addressBookName)
+        {
+            if (myAddressBook[addressBookName].Count <= 0)
+            {
+                Console.WriteLine("Your Address Book is empty");
+                return;
+            }
+            bool flag = true;
+            while (flag)
+            {
+                Console.WriteLine("Choose an option \n1. Person count by city \n2. Person count by state \n3. Exit");
+                int option = Convert.ToInt32(Console.ReadLine());
+                int countCity = 0, countState = 0;
+                switch (option)
+                {
+                    case 1:
+                        Console.WriteLine("Enter the city");
+                        string city = Console.ReadLine();
+                        var searchCity = myAddressBook[addressBookName].FindAll(x => x.city == city);
+                        foreach (var book in searchCity)
+                        {
+                            countCity = searchCity.Count;
+                        }
+                        Console.WriteLine("Person count by city : " + countCity);
+                        break;
+                    case 2:
+                        Console.WriteLine("Enter the state");
+                        string state = Console.ReadLine();
+                        var searchState = myAddressBook[addressBookName].FindAll(x => x.state == state);
+                        foreach (var book in searchState)
+                        {
+                            countState = searchState.Count;
+                        }
+                        Console.WriteLine("Person count by state : " + countState);
+                        break;
+                    case 3:
+                        flag = false;
+                        break;
+                    default:
+                        Console.WriteLine("Choose correct option");
+                        break;
+                }
             }
         }
     }
