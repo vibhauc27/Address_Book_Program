@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AddressBookSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -437,6 +438,48 @@ namespace AddressBookProgram
             {
                 // Console.WriteLine("FirstName : " + person.firstName + "LastName : " + person.lastName);
                 Console.WriteLine(person.ToString());
+            }
+        }
+        public void SortByCityStateZipCode(string addressBookName)
+        {
+            if (myAddressBook[addressBookName].Count <= 0)
+            {
+                Console.WriteLine("Your Address Book is empty");
+                return;
+            }
+            bool flag = true;
+            while (flag)
+            {
+                Console.WriteLine("\nChoose an option \n1. Order by city \n2. Order by state \n3. Order by Zip \n4. Exit");
+                int option = Convert.ToInt32(Console.ReadLine());
+                switch (option)
+                {
+                    case 1:
+                        foreach (var person in myAddressBook[addressBookName].OrderBy(x => x.city))
+                        {
+                            Console.WriteLine(person.ToString());
+                        }
+                        break;
+                    case 2:
+                        foreach (var person in myAddressBook[addressBookName].OrderBy(x => x.state))
+                        {
+                            Console.WriteLine(person.ToString());
+                        }
+                        break;
+                    case 3:
+                        foreach (var person in myAddressBook[addressBookName].OrderBy(x => x.zipCode))
+                        {
+                            Console.WriteLine(person.ToString());
+                        }
+                        break;
+                    case 4:
+                        flag = false;
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Entry");
+                        SortByCityStateZipCode(addressBookName);
+                        break;
+                }
             }
         }
     }
