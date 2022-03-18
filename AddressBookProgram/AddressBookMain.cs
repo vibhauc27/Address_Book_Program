@@ -1,6 +1,8 @@
 ﻿using AddressBookSystem;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -10,7 +12,7 @@ namespace AddressBookProgram
     {
         List<Contacts> addressBook = new List<Contacts>();
         public Dictionary<string, List<Contacts>> myAddressBook = new Dictionary<string, List<Contacts>>();
-
+                
         public void AddAddressBook()
         {
             bool flag = true;
@@ -480,6 +482,44 @@ namespace AddressBookProgram
                         SortByCityStateZipCode(addressBookName);
                         break;
                 }
+            }
+        }
+        public void WriteToFile()
+        {
+            foreach (var item in myAddressBook.Keys)
+            {
+                string path = @"/Users/Vibha/source/repos/AddressBookProgram/AddressBookProgram/FileIO.txt";
+                if (File.Exists(path))
+                {
+
+                    using (StreamWriter sw = File.AppendText(path))
+                    {
+                        sw.WriteLine("AddressBook Name: " + item );
+                        foreach (var person in myAddressBook[item])
+                        {
+                            sw.WriteLine("First Name: " + person.firstName.ToString());
+                            sw.WriteLine("Last Name: " + person.lastName.ToString());
+
+                        }
+                        sw.Close();
+                        Console.WriteLine(File.ReadAllText(path));
+                    }
+                        
+                }
+            }
+        }
+        public void ReadFile()
+        {
+            string path = @"/Users/Vibha/source/repos/AddressBookProgram/AddressBookProgram/FileIO.txt";
+            if (File.Exists(path))
+            {
+                StreamReader sr = File.OpenText(path);
+                string line = "";
+                while ((line = sr.ReadLine()) != null)
+                {
+                    Console.WriteLine(line);
+                }
+                sr.Close();
             }
         }
     }
