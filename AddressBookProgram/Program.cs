@@ -11,8 +11,8 @@ namespace AddressBookProgram
         {
             AddressBookMain addressbook = new AddressBookMain();
             addressbook.AddAddressBook();
-            addressbook.WriteToFile();
-            addressbook.ReadFile();
+            addressbook.WriteCsvFile();
+            addressbook.ReadCsvFile();
 
         }
     }

@@ -1,4 +1,5 @@
 ﻿using AddressBookSystem;
+using CsvHelper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -90,7 +91,12 @@ namespace AddressBookProgram
                                 + "\n 7.View by City or state."
                                 + "\n 8.Count Person by City or state."
                                 + "\n 9.Sort by Person FirstName."
-                                + "\n 10.Exit.\n");
+                                + "\n 10.Sort by City / State / ZipCode."
+                                + "\n 11.Write to File/"
+                                + "\n 12.Read from File/"
+                                + "\n 13.Write to CSV File."
+                                + "\n 14.Read from CSV File."
+                                + "\n 15.Exit.\n");
                 int option = Convert.ToInt32(Console.ReadLine());
                 switch (option)
                 {
@@ -127,6 +133,21 @@ namespace AddressBookProgram
                         SortByName(addressBookName);
                         break;
                     case 10:
+                        SortByCityStateZipCode(addressBookName);
+                        break;
+                    case 11:
+                        WriteToFile();
+                        break;
+                    case 12:
+                        ReadFile();
+                        break;
+                    case 13:
+                        WriteCsvFile();
+                        break;
+                    case 14:
+                        ReadCsvFile();
+                        break;
+                    case 15:
                         flag = false;
                         break;
                     default:
@@ -521,6 +542,34 @@ namespace AddressBookProgram
                 }
                 sr.Close();
             }
+        }
+
+        public void WriteCsvFile()
+        {
+            string csvPath = @"C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\CSVAddressBook.csv";
+            StreamWriter sw = new StreamWriter(csvPath);
+            CsvWriter cw = new CsvWriter(sw, CultureInfo.InvariantCulture);
+
+            foreach (var book in myAddressBook.Values)
+            {
+                cw.WriteRecords<Contacts>(book);
+            }
+            Console.WriteLine("Write the addressBook with person contact as CSV file is Successfull");
+            sw.Flush();
+            sw.Close();
+        }
+        public void ReadCsvFile()
+        {
+            string csvPath = @"C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\CSVAddressBook.csv";
+            StreamReader sr = new StreamReader(csvPath);
+            CsvReader cr = new CsvReader(sr, CultureInfo.InvariantCulture);
+            List<Contacts> readResult = cr.GetRecords<Contacts>().ToList();
+            Console.WriteLine("Reading from CSV file");
+            foreach (var item in readResult)
+            {
+                Console.WriteLine(item.ToString());
+            }
+            sr.Close();
         }
     }
 }

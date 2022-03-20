@@ -13,3 +13,7 @@ C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\obj\Debug\net6
 C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\obj\Debug\net6.0\AddressBookProgram.pdb
 C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\obj\Debug\net6.0\AddressBookProgram.genruntimeconfig.cache
 C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\obj\Debug\net6.0\ref\AddressBookProgram.dll
+C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\bin\Debug\net6.0\CsvHelper.dll
+C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\bin\Debug\net6.0\NLog.dll
+C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\obj\Debug\net6.0\AddressBookProgram.csproj.CopyComplete
