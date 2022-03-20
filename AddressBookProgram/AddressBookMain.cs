@@ -1,5 +1,6 @@
 ﻿using AddressBookSystem;
 using CsvHelper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,9 +12,10 @@ namespace AddressBookProgram
 {
     class AddressBookMain
     {
-        List<Contacts> addressBook = new List<Contacts>();
+        public List<Contacts> addressBook = new List<Contacts>();
         public Dictionary<string, List<Contacts>> myAddressBook = new Dictionary<string, List<Contacts>>();
-                
+
+
         public void AddAddressBook()
         {
             bool flag = true;
@@ -96,7 +98,9 @@ namespace AddressBookProgram
                                 + "\n 12.Read from File/"
                                 + "\n 13.Write to CSV File."
                                 + "\n 14.Read from CSV File."
-                                + "\n 15.Exit.\n");
+                                + "\n 15.Write to JSON File"
+                                + "\n 16.Read from JSON File"
+                                + "\n 17.Exit.\n");
                 int option = Convert.ToInt32(Console.ReadLine());
                 switch (option)
                 {
@@ -136,10 +140,10 @@ namespace AddressBookProgram
                         SortByCityStateZipCode(addressBookName);
                         break;
                     case 11:
-                        WriteToFile();
+                        WriteToFile(addressBookName);
                         break;
                     case 12:
-                        ReadFile();
+                        ReadFile(addressBookName);
                         break;
                     case 13:
                         WriteCsvFile();
@@ -148,6 +152,12 @@ namespace AddressBookProgram
                         ReadCsvFile();
                         break;
                     case 15:
+                        WriteJsonFile();
+                        break;
+                    case 16:
+                        ReadJsonFile();
+                        break;
+                    case 17:
                         flag = false;
                         break;
                     default:
@@ -463,6 +473,7 @@ namespace AddressBookProgram
                 Console.WriteLine(person.ToString());
             }
         }
+
         public void SortByCityStateZipCode(string addressBookName)
         {
             if (myAddressBook[addressBookName].Count <= 0)
@@ -504,34 +515,30 @@ namespace AddressBookProgram
                         break;
                 }
             }
+
         }
-        public void WriteToFile()
+
+        public void WriteToFile(string addressBookName)
         {
-            foreach (var item in myAddressBook.Keys)
+            foreach (var item in myAddressBook[addressBookName])
             {
-                string path = @"/Users/Vibha/source/repos/AddressBookProgram/AddressBookProgram/FileIO.txt";
+                string path = @"D:\BridgeLabz\AddressBook-System\AddressBookSystem\FileIO.txt";
                 if (File.Exists(path))
                 {
-
-                    using (StreamWriter sw = File.AppendText(path))
+                    StreamWriter sw = File.AppendText(path);
+                    sw.WriteLine("AddressBook Name: " + addressBookName);
+                    foreach (var person in myAddressBook[addressBookName])
                     {
-                        sw.WriteLine("AddressBook Name: " + item );
-                        foreach (var person in myAddressBook[item])
-                        {
-                            sw.WriteLine("First Name: " + person.firstName.ToString());
-                            sw.WriteLine("Last Name: " + person.lastName.ToString());
-
-                        }
-                        sw.Close();
-                        Console.WriteLine(File.ReadAllText(path));
+                        sw.WriteLine(person.ToString());
                     }
-                        
+                    sw.Close();
+                    Console.WriteLine(File.ReadAllText(path));
                 }
             }
         }
-        public void ReadFile()
+        public void ReadFile(string addressBookName)
         {
-            string path = @"/Users/Vibha/source/repos/AddressBookProgram/AddressBookProgram/FileIO.txt";
+            string path = @"D:\BridgeLabz\AddressBook-System\AddressBookSystem\FileIO.txt";
             if (File.Exists(path))
             {
                 StreamReader sr = File.OpenText(path);
@@ -543,10 +550,9 @@ namespace AddressBookProgram
                 sr.Close();
             }
         }
-
         public void WriteCsvFile()
         {
-            string csvPath = @"C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\CSVAddressBook.csv";
+            string csvPath = @"D:\BridgeLabz\AddressBook-System\AddressBookSystem\CSVAddressBook.csv";
             StreamWriter sw = new StreamWriter(csvPath);
             CsvWriter cw = new CsvWriter(sw, CultureInfo.InvariantCulture);
 
@@ -560,7 +566,7 @@ namespace AddressBookProgram
         }
         public void ReadCsvFile()
         {
-            string csvPath = @"C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\CSVAddressBook.csv";
+            string csvPath = @"D:\BridgeLabz\AddressBook-System\AddressBookSystem\CSVAddressBook.csv";
             StreamReader sr = new StreamReader(csvPath);
             CsvReader cr = new CsvReader(sr, CultureInfo.InvariantCulture);
             List<Contacts> readResult = cr.GetRecords<Contacts>().ToList();
@@ -570,6 +576,27 @@ namespace AddressBookProgram
                 Console.WriteLine(item.ToString());
             }
             sr.Close();
+        }
+        public void WriteJsonFile()
+        {
+            string jsonPath = @"C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\JSONAddressBook.json";
+            foreach (var item in myAddressBook.Values)
+            {
+                string jsonData = JsonConvert.SerializeObject(item);
+                File.WriteAllText(jsonPath, jsonData);
+            }
+            Console.WriteLine("Write the addressBook with person contact as JSON file is Successfull");
+        }
+        public void ReadJsonFile()
+        {
+            string jsonPath = @"C:\Users\Vibha\source\repos\AddressBookProgram\AddressBookProgram\JSONAddressBook.json";
+            string jsonData = File.ReadAllText(jsonPath);
+            var jsonResult = JsonConvert.DeserializeObject<List<Contacts>>(jsonData).ToList();
+            Console.WriteLine("Reading from Json file");
+            foreach (var item in jsonResult)
+            {
+                Console.WriteLine(item);
+            }
         }
     }
 }
